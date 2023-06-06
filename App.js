@@ -1,20 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { useEffect, useState } from "react";
+import Navigation from "./src/components/Navigation";
+import { supabase } from "./src/lib/supabase";
+import AuthNavigation from "./src/components/AuthNavigation";
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const sessionListener = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === "SIGNED_IN") {
+          setUser(session.user);
+        } else if (event === "SIGNED_OUT") {
+          setUser(null);
+        }
+      }
+    );
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    return () => {
+      sessionListener.unsubscribe();
+    };
+  }, []);
+
+  return user === null ? (<AuthNavigation/>) : (<Navigation/>)
+   
+}
