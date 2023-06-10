@@ -8,7 +8,10 @@ import {
 } from "@react-native-material/core";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 const AppBarrSearch = ({ title, addModal, handleSearch = () => {} }) => {
+  const navigation = useNavigation();
+  
   const [showSearch, setshowSearch] = useState(false);
   const [search, setSearch] = useState();
 
@@ -36,7 +39,7 @@ const AppBarrSearch = ({ title, addModal, handleSearch = () => {} }) => {
       leading={(props) => (
         <IconButton
           onPress={() => {
-            addModal();
+            navigation.navigate('Cart')
           }}
           icon={(props) => <MaterialIcons {...props} name="shopping-cart" />}
           {...props}

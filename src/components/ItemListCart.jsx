@@ -4,8 +4,7 @@ import React from "react";
 import { useParse } from "../hooks/useParse";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const ItemList = ({ item, toggleConfirm, toogleEdit, toggleConfirmCart }) => {
-  
+const ItemListCart = ({ item, toggleDelete }) => {
   return (
     <Surface
       elevation={6}
@@ -22,23 +21,31 @@ const ItemList = ({ item, toggleConfirm, toogleEdit, toggleConfirmCart }) => {
         style={{ flex: 1, rowGap: 1, flexDirection: "row", flexWrap: "wrap" }}
       >
         <View style={{ width: "70%" }}>
+          <Text>{item.name}</Text>
           <Text>
-            {item.name} - {item.cod}
-          </Text>
-          <Text>
-            Precio: $ {useParse().parseNum({ num: item.sellPrice })} -
-            Disponibles: {useParse().parseNum({ num: item.stock })}
+            Precio: $ {useParse().parseNum({ num: item.sellPrice })} - Cantidad:{" "}
+            {useParse().parseNum({ num: item.stock })}
           </Text>
         </View>
         <HStack spacing={15} center style={{ width: "30%" }}>
-          <MaterialIcons name="attach-money" onPress={() => {toggleConfirmCart(item) }} size={24} color="black" />
-          <MaterialIcons name="edit" onPress={() => {toogleEdit(item) }} size={24} color="black" />
-          <MaterialIcons name="delete" onPress={() => {toggleConfirm(item) }} size={24} color="black" />
+          <MaterialIcons
+            name="edit"
+            onPress={() => {}}
+            size={24}
+            color="black"
+          />
+          <MaterialIcons
+            name="delete"
+            onPress={() => {
+              toggleDelete(item.id);
+            }}
+            size={24}
+            color="black"
+          />
         </HStack>
       </View>
-      
     </Surface>
   );
 };
 
-export default ItemList;
+export default ItemListCart;

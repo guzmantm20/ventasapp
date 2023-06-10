@@ -8,6 +8,7 @@ import Snack from "../components/Snack";
 import ItemList from "../components/ItemList";
 import ConfirmDialog from "../components/ConfirmDialog";
 import EditProductModal from "../components/modals/EditProductModal";
+import CartConfirm from "../components/forms/CartConfirm";
 
 const Products = () => {
   const [showModal, setShowModal] = useState(false);
@@ -17,6 +18,7 @@ const Products = () => {
   const [snackMessage, setSnackMessage] = useState({});
   const [snackVisibility, setsnackVisibility] = useState(false);
   const [showConfirmDialog, setshowConfirmDialog] = useState(false);
+  const [showConfirmCart, setshowConfirmCart] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const { getAllProducts, deleteProdutc } = useProducts();
   const toggleConfirm = async (item) => {
@@ -33,6 +35,18 @@ const Products = () => {
     } else {
       setSelectedProduct(item);
       setshowConfirmDialog(true);
+    }
+  };
+
+  const toggleConfirmCart = (item) => {
+    if (typeof item == "boolean") {
+      if(item === true){
+        showSnack("Producto agregado al carrito ✔");
+      }
+      setshowConfirmCart(false);
+    } else {
+      setSelectedProduct(item);
+      setshowConfirmCart(true);
     }
   };
 
@@ -59,7 +73,7 @@ const Products = () => {
         setProdutcs(allProducts.data);
         setFilterProducts(allProducts.data);
       } catch (error) {
-        throw new Error('Error al obtener los productos!');
+        throw new Error("Error al obtener los productos!");
       }
     };
 
@@ -101,6 +115,7 @@ const Products = () => {
       setsnackVisibility(false); // count is 0 here
     }, 3000);
   };
+
   return (
     <Background>
       <AppBarrSearch
@@ -117,6 +132,7 @@ const Products = () => {
             <ItemList
               item={item}
               toggleConfirm={toggleConfirm}
+              toggleConfirmCart={toggleConfirmCart}
               toogleEdit={toogleEdit}
             />
           )}
@@ -140,6 +156,14 @@ const Products = () => {
           text={`Desea eliminar el siguiente producto: ${selectedProduct.name}`}
           visible={showConfirmDialog}
           toggleConfirm={toggleConfirm}
+        />
+      )}
+      {showConfirmCart && (
+        <CartConfirm
+          title={"Agregar al carrito"}
+          product={selectedProduct}
+          visible={showConfirmCart}
+          toggleConfirm={toggleConfirmCart}
         />
       )}
     </Background>
