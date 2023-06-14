@@ -4,25 +4,40 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Stack } from "@react-native-material/core";
 import { useParse } from "../hooks/useParse";
 import useCartStore from "../store/useCartStore";
-const CartChildren = ({goBack}) => {
+const CartChildren = ({ goBack }) => {
   const total = useCartStore((state) => state.totalSell);
+  const clearCart = useCartStore((state) => state.clearCart);
+  const setPay = useCartStore((state) => state.setPay);
   const handledPay = () => {
-    goBack()
-  }
+    if (total > 0) setPay();
+  };
+  const handledClear = () => {
+    clearCart();
+    goBack();
+  };
   return (
     <Stack direction="row" style={{ alignItems: "center" }} p={10}>
       <Text style={{ width: "30%" }}>
         Total: $ {useParse().parseNum({ num: total })}
       </Text>
-      <TouchableOpacity
-        style={{ width: "70%", alignItems: "center" }}
-        onPress={handledPay}
+      <Stack
+        direction="row"
+        style={{ alignItems: "center", justifyContent: "center" }}
+        spacing={10}
       >
-        <Stack direction="row" style={{ alignItems: "center" }} spacing={10}>
-          <Text>Pagar</Text>
+        <TouchableOpacity
+          style={{ width: "35%", alignItems: "center" }}
+          onPress={handledPay}
+        >
           <FontAwesome name="money" size={30} color="black" />
-        </Stack>
-      </TouchableOpacity>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ width: "35%", alignItems: "center" }}
+          onPress={handledClear}
+        >
+          <FontAwesome name="trash" size={30} color="black" />
+        </TouchableOpacity>
+      </Stack>
     </Stack>
   );
 };

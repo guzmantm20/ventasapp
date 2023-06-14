@@ -6,16 +6,33 @@ import useCartStore from "../store/useCartStore";
 import ItemListCart from "../components/ItemListCart";
 import { FlatList } from "react-native";
 import Snack from "../components/Snack";
+import { useEffect } from "react/cjs/react.development";
+import CartConfirm from "../components/cart/CartConfirm";
 const Cart = () => {
   const cartStore = useCartStore((state) => state.products);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const payCart = useCartStore((state) => state.pay);
+  const setPay = useCartStore((state) => state.setPay);
   const [snackVisibility, setsnackVisibility] = useState(false);
   const [snackMessage, setSnackMessage] = useState({});
+  const [showCartConfirm, setShowCartConfirm] = useState(payCart)
   const navigation = useNavigation();
   const toggleDelete = (item) => {
     removeFromCart(item);
     showSnack("Producto eliminado del carrito");
   };
+  
+  useEffect(() => {
+    setShowCartConfirm(payCart)
+  }, [payCart])
+
+  const toggleConfirm = (item) => {
+    if(item === true){
+
+    }
+    setPay()
+  }
+  
 
   const showSnack = (message, color) => {
     setSnackMessage({ message, color });
@@ -27,7 +44,6 @@ const Cart = () => {
   return (
     <Background>
       <BackButton goBack={navigation.goBack} title={"Carrito"} cartShow={true} />
-      {snackVisibility && <Snack {...snackMessage} />}
       {cartStore && (
         <FlatList
           data={cartStore}
@@ -40,6 +56,9 @@ const Cart = () => {
           contentContainerStyle={{ paddingBottom: 55 }}
         />
       )}
+      
+      {snackVisibility && <Snack {...snackMessage} />}
+      {showCartConfirm && <CartConfirm toggleConfirm={toggleConfirm} visible={showCartConfirm} />}
     </Background>
   );
 };

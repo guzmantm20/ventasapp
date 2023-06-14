@@ -29,12 +29,6 @@ const ItemListCart = ({ item, toggleDelete }) => {
         </View>
         <HStack spacing={15} center style={{ width: "30%" }}>
           <MaterialIcons
-            name="edit"
-            onPress={() => {}}
-            size={24}
-            color="black"
-          />
-          <MaterialIcons
             name="delete"
             onPress={() => {
               toggleDelete(item.id);

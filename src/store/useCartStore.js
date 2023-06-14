@@ -2,6 +2,7 @@ import { create } from "zustand";
 const useCartStore = create((set, get) => ({
   products: [],
   totalSell: 0,
+  pay: false,
   addToCart: (product) => {
     const { totalSell } = get();
     const newTotal = totalSell + product.sellPrice * product.stock;
@@ -17,7 +18,8 @@ const useCartStore = create((set, get) => ({
       products: state.products.filter((p) => p.id !== productId),
     }));
   },
-  clearCart: () => set({ products: [], totalSell: 0 }),
+  clearCart: () => set({ products: [], totalSell: 0, pay: false }),
+  setPay: () => set((state) => ({pay: !state.pay}))
 }));
 
 export default useCartStore;
