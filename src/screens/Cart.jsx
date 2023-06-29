@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Background from "../components/Background";
-import BackButton from "../components/BackButton";
+import BackButton from "../components/appbars/BackButton";
 import { useNavigation } from "@react-navigation/native";
 import useCartStore from "../store/useCartStore";
 import ItemListCart from "../components/ItemListCart";
@@ -13,26 +13,30 @@ const Cart = () => {
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const payCart = useCartStore((state) => state.pay);
   const setPay = useCartStore((state) => state.setPay);
+  const clearCart = useCartStore((state) => state.clearCart);
   const [snackVisibility, setsnackVisibility] = useState(false);
   const [snackMessage, setSnackMessage] = useState({});
-  const [showCartConfirm, setShowCartConfirm] = useState(payCart)
+  const [showCartConfirm, setShowCartConfirm] = useState(payCart);
   const navigation = useNavigation();
   const toggleDelete = (item) => {
     removeFromCart(item);
     showSnack("Producto eliminado del carrito");
   };
-  
+
   useEffect(() => {
-    setShowCartConfirm(payCart)
-  }, [payCart])
+    setShowCartConfirm(payCart);
+  }, [payCart]);
 
   const toggleConfirm = (item) => {
-    if(item === true){
-
+    if (item === false) {
+      setPay();
+      return;
     }
-    setPay()
-  }
-  
+    showSnack("Compra realizada ✔");
+    clearCart();
+    setPay();
+    setShowCartConfirm(false)
+  };
 
   const showSnack = (message, color) => {
     setSnackMessage({ message, color });
@@ -43,7 +47,11 @@ const Cart = () => {
   };
   return (
     <Background>
-      <BackButton goBack={navigation.goBack} title={"Carrito"} cartShow={true} />
+      <BackButton
+        goBack={navigation.goBack}
+        title={"Carrito"}
+        cartShow={true}
+      />
       {cartStore && (
         <FlatList
           data={cartStore}
@@ -56,9 +64,11 @@ const Cart = () => {
           contentContainerStyle={{ paddingBottom: 55 }}
         />
       )}
-      
+
       {snackVisibility && <Snack {...snackMessage} />}
-      {showCartConfirm && <CartConfirm toggleConfirm={toggleConfirm} visible={showCartConfirm} />}
+      {showCartConfirm && (
+        <CartConfirm toggleConfirm={toggleConfirm} visible={showCartConfirm} />
+      )}
     </Background>
   );
 };

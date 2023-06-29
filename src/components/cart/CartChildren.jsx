@@ -2,14 +2,15 @@ import React from "react";
 import { Text, TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Stack } from "@react-native-material/core";
-import { useParse } from "../hooks/useParse";
-import useCartStore from "../store/useCartStore";
+import { useParse } from "../../hooks/useParse";
+import useCartStore from "../../store/useCartStore";
 const CartChildren = ({ goBack }) => {
   const total = useCartStore((state) => state.totalSell);
   const clearCart = useCartStore((state) => state.clearCart);
   const setPay = useCartStore((state) => state.setPay);
   const handledPay = () => {
-    if (total > 0) setPay();
+    if (total == 0) return;
+    setPay()
   };
   const handledClear = () => {
     clearCart();

@@ -5,6 +5,13 @@ export const useParse = () => {
     .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   }
 
-  return {parseNum}
+  const parseDate = ({date}) => {
+    var day = date.getUTCDate(); 
+    var month = ("0" + (date.getMonth() + 1)).slice(-2); 
+    var year = date.getFullYear();
+    return year+'-'+month+'-'+day
+  }
+
+  return {parseNum, parseDate}
 };
 

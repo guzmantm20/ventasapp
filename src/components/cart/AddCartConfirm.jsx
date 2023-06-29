@@ -12,7 +12,7 @@ import {
 } from "@react-native-material/core";
 import useCartStore from "../../store/useCartStore";
 
-const CartConfirm = ({ product, toggleConfirm, visible }) => {
+const AddCartConfirm = ({ product, toggleConfirm, visible }) => {
   const addToCart = useCartStore((state) => state.addToCart);
   const [cartStock, setCartStock] = useState();
   const handledConfirm = () => {
@@ -54,4 +54,4 @@ const CartConfirm = ({ product, toggleConfirm, visible }) => {
   );
 };
 
-export default CartConfirm;
+export default AddCartConfirm;

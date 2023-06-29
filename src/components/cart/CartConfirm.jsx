@@ -15,17 +15,23 @@ import { FlatList } from "react-native";
 import useCartStore from "../../store/useCartStore";
 import { useParse } from "../../hooks/useParse";
 import { StyleSheet } from "react-native";
-
+import { useOperations } from "../../services/Operations";
 const CartConfirm = ({ toggleConfirm, visible }) => {
   const products = useCartStore((state) => state.products);
   const total = useCartStore((state) => state.totalSell);
   const [efectivoRecibido, setEfectivoRecibido] = useState('')
   const [efectivoDevuelto, setEfectivoDevuelto] = useState('')
+  const { sellCart } = useOperations()
 
   const handledChange = (value) => {
     setEfectivoRecibido(value)
     const devolver = value - total
     setEfectivoDevuelto(devolver+'')
+  }
+
+  const handledConfirm = () => {
+    toggleConfirm(true)
+    sellCart({total, payData: products})
   }
 
   return (
@@ -84,7 +90,7 @@ const CartConfirm = ({ toggleConfirm, visible }) => {
             title="Ok"
             compact
             variant="text"
-            onPress={() => toggleConfirm(true)}
+            onPress={() => handledConfirm()}
           />
         </DialogActions>
       </Dialog>

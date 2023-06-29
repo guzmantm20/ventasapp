@@ -1,14 +1,14 @@
 import { FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import Background from "../components/Background";
-import AppBarrSearch from "../components/AppBarrSearch";
+import AppBarrSearch from "../components/appbars/AppBarrSearch";
 import NewProductModal from "../components/modals/NewProductModal";
 import { useProducts } from "../services/Products";
 import Snack from "../components/Snack";
 import ItemList from "../components/ItemList";
 import ConfirmDialog from "../components/ConfirmDialog";
 import EditProductModal from "../components/modals/EditProductModal";
-import CartConfirm from "../components/forms/CartConfirm";
+import AddCartConfirm from "../components/cart/AddCartConfirm";
 
 const Products = () => {
   const [showModal, setShowModal] = useState(false);
@@ -159,7 +159,7 @@ const Products = () => {
         />
       )}
       {showConfirmCart && (
-        <CartConfirm
+        <AddCartConfirm
           title={"Agregar al carrito"}
           product={selectedProduct}
           visible={showConfirmCart}

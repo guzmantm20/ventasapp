@@ -1,7 +1,7 @@
 import { Button, Text } from "react-native";
 import React from "react";
 import Background from "../components/Background";
-import BackButton from "../components/BackButton";
+import BackButton from "../components/appbars/BackButton";
 import { supabase } from "../lib/supabase";
 
 const Home = () => {

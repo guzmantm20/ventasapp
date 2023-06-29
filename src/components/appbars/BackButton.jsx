@@ -2,7 +2,7 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { AppBar } from "@react-native-material/core";
-import CartChildren from "./CartChildren";
+import CartChildren from "../cart/CartChildren";
 
 
 export default function BackButton({ goBack, title, cartShow = false }) {

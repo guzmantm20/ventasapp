@@ -4,12 +4,15 @@ export const useProducts = () => {
 
   const getAllProducts = async () => {
     try {
-      const userId = (await supabase.auth.getUser()).data.user.id;
-      const { error, data } = await supabase
+      const dataUser = await supabase.auth.getUser()
+      const userId = dataUser.data.user.id;
+      const { error, data, status } = await supabase
         .from("products")
         .select()
-        .eq("userId", userId);
-      if (error) return { error };
+        .eq("user_id", userId);
+      if (error) {
+        return { error }
+      }
       return { data };
     } catch (error) {
       console.error(error);
@@ -18,7 +21,8 @@ export const useProducts = () => {
 
   const createProduct = async ({ name, codigo, stock, sell, buy }) => {
     try {
-      const userId = (await supabase.auth.getUser()).data.user.id;
+      const dataUser = await supabase.auth.getUser()
+      const userId = dataUser.data.user.id;
       const { error, data } = await supabase
         .from("products")
         .insert({
@@ -27,7 +31,7 @@ export const useProducts = () => {
           cod: codigo,
           buyPrice: buy,
           sellPrice: sell,
-          userId: userId,
+          user_id: userId,
         })
         .select();
       if (error) return { error };
@@ -39,7 +43,8 @@ export const useProducts = () => {
 
   const editProduct = async ({ name, codigo, stock, sell, buy, id }) => {
     try {
-      const userId = (await supabase.auth.getUser()).data.user.id;
+      const dataUser = await supabase.auth.getUser()
+      const userId = dataUser.data.user.id;
       const { error, data } = await supabase
         .from("products")
         .update({
@@ -48,9 +53,9 @@ export const useProducts = () => {
           cod: codigo,
           buyPrice: buy,
           sellPrice: sell,
-          userId: userId,
+          user_id: userId,
         })
-        .eq("userId", userId)
+        .eq("user_id", userId)
         .eq("id", id)
         .select();
       if (error) return { error };
@@ -62,11 +67,12 @@ export const useProducts = () => {
 
   const deleteProdutc = async ({ itemId }) => {
     try {
-      const userId = (await supabase.auth.getUser()).data.user.id;
+      const dataUser = await supabase.auth.getUser()
+      const userId = dataUser.data.user.id;
       const { error, data } = await supabase
         .from("products")
         .delete()
-        .eq("userId", userId)
+        .eq("user_id", userId)
         .eq("id", itemId);
 
       if (error) return { error };
